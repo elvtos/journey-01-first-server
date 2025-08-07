@@ -104,5 +104,6 @@ sudo ufw enable
 - This project is a starting point for learning Linux administration, web server configuration, and basic DevOps skills.
 
 //github.com/yourusername/journey-02-dockerizing-flask)
+- [Journey 02: Dockerizing Flask](https://github.com/yourusername/journey-02-dockerizing-flask)
 - [Journey 03: PostgreSQL Setup](https://github.com/yourusername/journey-03-postgresql-setup)
 - [Journey 04: Monitoring with Prometheus](https://github.com/yourusername/journey-04-monitoring-prometheus)
