@@ -1,83 +1,108 @@
 # Journey 01: First Server
 
-🚀 My first self-hosted Flask application deployed on Ubuntu Server using NGINX as a reverse proxy.
+This project demonstrates the setup of a web server on Ubuntu Server 24.04 LTS using a virtual machine (UTM on macOS). It includes a simple Flask application served via Nginx as a reverse proxy.
 
----
+## Features
+- Basic Flask application running on Ubuntu Server.
+- Nginx configured as a reverse proxy to route traffic from port 80 to the Flask app on port 5000.
+- Secure access with firewall rules (ports 80 and 443 allowed).
 
-## 📦 Stack
-
-- Ubuntu Server (installed in UTM on macOS)
-- Python 3 + Flask (development server)
-- NGINX (reverse proxy)
-- UFW (Uncomplicated Firewall)
-
----
-
-## 🛠️ What I Did
-
-1. Installed Ubuntu Server in UTM virtual machine
-2. Set up Python and Flask
-3. Created a simple Flask app
-4. Ran the Flask app on port `5000`
-5. Installed and configured NGINX to reverse proxy to the Flask app
-6. Enabled HTTP/HTTPS access with `ufw`
-
----
-
-## 🌐 Result
-
-- The Flask app is accessible via `http://<server-ip>/` (no need to specify `:5000`)
-- NGINX forwards requests to the running Flask development server
-- UFW firewall allows ports 80 (HTTP) and 443 (HTTPS)
-
----
-
-## 🧪 Test the App
-
-Run the app manually:
-
-```bash
-python3 app.py
+## Setup Instructions
+1. Install Ubuntu Server 24.04 LTS:
+   - Set up a virtual machine using UTM on macOS with the Ubuntu Server 24.04 LTS ARM64 ISO.
+   - Update the system:
+```
+sudo apt update && sudo apt upgrade -y
 ```
 
-Then access it in your browser:
-
+2. Install Dependencies:
+   - Install required packages:
 ```
-http://<your-server-ip>/
-```
-
-Make sure Flask is bound to 0.0.0.0 in app.py:
-
-```
-app.run(host='0.0.0.0', port=5000)
+sudo apt install -y nginx python3 python3-pip python3-venv
 ```
 
-## 🔐 Firewall Settings
-
+3. Create and Configure the Flask App:
+   - Create a project directory:
 ```
-sudo ufw allow 443
-sudo ufw allow 80
+mkdir ~/web-app && cd ~/web-app
+```
+   - Set up a virtual environment:
+```
+python3 -m venv venv
+```
+   - Activate it:
+```
+source venv/bin/activate
+```
+   - Install Flask:
+```
+pip install flask
+ ```
+   - Create app.py with the following content:
+```
+from flask import Flask
+     app = Flask(__name__)
+
+     @app.route('/')
+     def hello():
+         return 'Hello from my Linux server! Ready for Canada!'
+
+     if __name__ == '__main__':
+         app.run(host='0.0.0.0', port=5000)
+```
+- Run the app:
+```
+python app.py &
+```
+
+4. Configure Nginx as a Reverse Proxy:
+   - Create a configuration file:
+```
+sudo nano /etc/nginx/sites-available/flask-app
+```
+   - Add the following:
+```
+server {
+         listen 80;
+         server_name _;
+         location / {
+             proxy_pass http://localhost:5000;
+             proxy_set_header Host $host;
+             proxy_set_header X-Real-IP $remote_addr;
+         }
+     }
+```
+- Enable the configuration:
+```
+sudo ln -s /etc/nginx/sites-available/flask-app /etc/nginx/sites-enabled/
+```
+   - Restart Nginx:
+```
+sudo systemctl restart nginx.
+```
+
+5. Configure Firewall:
+   - Allow ports 80 and 443:
+```
+sudo ufw allow 80 && sudo ufw allow 443
+```
+   - Enable firewall:
+```
 sudo ufw enable
 ```
 
-## 🧠 Lessons Learned
+6. Access the Application:
+   - Open your browser and navigate to http://<server-ip>
+   - The Flask app should display: "Hello from my Linux server! Ready for Canada!".
 
-	•	How to install and use a basic Ubuntu Server in a virtual machine
-	•	How to build a minimal web app with Flask
-	•	How to configure NGINX as a reverse proxy
-	•	How to use UFW to allow traffic securely
+## Future Plans
+- Automate setup with Ansible.
+- Containerize the application with Docker.
+- Add monitoring with Prometheus and Grafana.
 
-## 🎯 Purpose
+## Notes
+- This project is a starting point for learning Linux administration, web server configuration, and basic DevOps skills.
 
-This is the first step in my journey to becoming a Linux systems administrator and DevOps engineer.  
-I’m learning how to configure servers, deploy applications, and manage infrastructure using real tools and technologies.
-
----
-
-> More projects coming soon — follow the journey!
-
-## 🔗 Next Steps
-
-- [Journey 02: Dockerizing Flask](https://github.com/yourusername/journey-02-dockerizing-flask)
+//github.com/yourusername/journey-02-dockerizing-flask)
 - [Journey 03: PostgreSQL Setup](https://github.com/yourusername/journey-03-postgresql-setup)
 - [Journey 04: Monitoring with Prometheus](https://github.com/yourusername/journey-04-monitoring-prometheus)
