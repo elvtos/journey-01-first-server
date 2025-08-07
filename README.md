@@ -45,7 +45,7 @@ from flask import Flask
 
      @app.route('/')
      def hello():
-         return 'Hello from my Linux server! Ready for Canada!'
+         return 'Hello from my Linux server!'
 
      if __name__ == '__main__':
          app.run(host='0.0.0.0', port=5000)
