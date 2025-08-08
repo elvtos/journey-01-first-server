@@ -2,7 +2,7 @@ venv/
 __pycashe__/
 *.pyc
 *.pyo
-*pyd
+*.pyd
 
 *.log
 
