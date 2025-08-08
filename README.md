@@ -74,8 +74,8 @@ sudo ufw enable
 ```
 
 6. Access the Application:
-   - Open your browser and navigate to http://<server-ip>
-   - The Flask app should display: "Hello from my Linux server! Ready for Canada!".
+   - Open your browser and navigate to http://server_ip
+   - The Flask app should display: "Hello from my Linux server!".
 
 ## Future Plans
 - Automate setup with Ansible.
