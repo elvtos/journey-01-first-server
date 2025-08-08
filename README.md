@@ -38,18 +38,9 @@ source venv/bin/activate
 ```
 pip install flask
  ```
-   - Create app.py with the following content:
-```
-from flask import Flask
-     app = Flask(__name__)
 
-     @app.route('/')
-     def hello():
-         return 'Hello from my Linux server!'
+   - Create app.py with the following content: [app.py](app.py)
 
-     if __name__ == '__main__':
-         app.run(host='0.0.0.0', port=5000)
-```
 - Run the app:
 ```
 python app.py &
@@ -60,18 +51,9 @@ python app.py &
 ```
 sudo nano /etc/nginx/sites-available/flask-app
 ```
-   - Add the following:
-```
-server {
-         listen 80;
-         server_name _;
-         location / {
-             proxy_pass http://localhost:5000;
-             proxy_set_header Host $host;
-             proxy_set_header X-Real-IP $remote_addr;
-         }
-     }
-```
+
+   - Add the following: [nginx/flask-app](nginx/flask-app)
+
 - Enable the configuration:
 ```
 sudo ln -s /etc/nginx/sites-available/flask-app /etc/nginx/sites-enabled/
